@@ -11,6 +11,10 @@ const WorkSpaceSchema = mongoose.Schema({
     projectName: {
         type: String,
         required: true,
+    },
+    projectDesc:{
+        type:String,
+        required: true,
     }
 });
 

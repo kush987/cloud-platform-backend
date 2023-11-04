@@ -11,12 +11,13 @@ class InstanceController {
 
         let instance_name = req.body.instance;
         let resultInstance = await Product.findOne({ 'instance_name': instance_name });
-        let workSpace = await WorkSpace.findOne({'user_id':req.body.user_id})
+        // let workSpace = await WorkSpace.findOne({'user_id':req.body.user_id})
+        let projectId = req.body.projectId;
         const username = resultInstance.toJSON().instance_name + '-' + req.body.username;
         let container_id = '';
         let instance_Name = '';
-        if(!workSpace){
-            res.send({'message':"please create your project workspace"})
+        if(!projectId){
+            res.send({'message':"please select your project workspace"})
         }else{
 
             try {
@@ -60,12 +61,12 @@ class InstanceController {
                 const result = execSync(`docker ps -qf "name=${username}"`)
                 container_id = result.toString().replace(/\s+/g, '');
                 instance_Name = resultInstance.toJSON().instance_name;
-                await UserInstance.create({ 'user_id': req.body.user_id, 'projectId':workSpace.projectId, 'container_id': container_id, 'instance_name': resultInstance.toJSON().instance_name,'status':'running' });
+                await UserInstance.create({ 'user_id': req.body.user_id, 'projectId':projectId, 'container_id': container_id, 'instance_name': resultInstance.toJSON().instance_name,'status':'running' });
     
             } catch (error) {
                 res.send("error")
             }
-            res.send({ 'user_id': req.body.user_id,'projectId':workSpace.projectId, 'container_id': container_id , 'instance_name': instance_Name ,'status':'running'})
+            res.send({ 'user_id': req.body.user_id,'projectId':projectId, 'container_id': container_id , 'instance_name': instance_Name ,'status':'running'})
         }
     }
 
