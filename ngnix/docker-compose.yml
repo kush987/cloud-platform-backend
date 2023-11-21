@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+    nginx.conf:
+        ports:
+            - '8001:8001'
+        volumes:
+            - /media/diatoz/New Volume/testAngular/cloud-platform-backend/ngnix/ngnix-confg:/etc/nginx
+        image: my-custom-nginx
+        build: 
+          context: .

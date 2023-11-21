@@ -11,6 +11,7 @@ class InstanceController {
     createInstance = async (req, res, next) => {
         let instance_name = req.body.instance;
         let resultInstance = await Product.findOne({ 'instance_name': instance_name });
+        let appName = req.body.appName;
         let projectId = req.body.projectId;
         const username = resultInstance.toJSON().instance_name + '-' + req.body.username;
         let container_id = '';
@@ -32,7 +33,7 @@ class InstanceController {
                         SecurityOpt: ['seccomp=unconfined'],
                         PortBindings: { '3000/tcp': [{}] },
                         RestartPolicy: { Name: 'unless-stopped' },
-                        Binds: ['/path/to/config:/config']
+                        Binds: [`/media/diatoz/New Volume/testAngular/nodejs-code-server/${username}:/config`]
                     }
                 });
                 container_id = response.data.Id;
@@ -43,7 +44,7 @@ class InstanceController {
                     HostConfig: {
                         PortBindings: { '8443/tcp': [{}] },
                         RestartPolicy: { Name: 'unless-stopped' },
-                        Binds: ['/path/to/appdata/config:/config']
+                        Binds: [`/media/diatoz/New Volume/testAngular/nodejs-code-server/${username}:/config`]
                     },
                     Env: [
                         'PUID=1000',
@@ -65,17 +66,21 @@ class InstanceController {
     
             await UserInstance.create({
                 'user_id': req.body.user_id,
+                'appName': appName,
                 'projectId': projectId,
                 'container_id': container_id,
                 'instance_name': resultInstance.toJSON().instance_name,
+                'storage_path': `/media/diatoz/New Volume/testAngular/nodejs-code-server/${username}`,
                 'status': 'running'
             });
     
             res.send({
                 'user_id': req.body.user_id,
+                'appName': appName,
                 'projectId': projectId,
                 'container_id': container_id,
                 'instance_name': instance_Name,
+                'storage_path': `/media/diatoz/New Volume/testAngular/nodejs-code-server/${username}`,
                 'status': 'running'
             });
         } catch (error) {

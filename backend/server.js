@@ -14,7 +14,7 @@ connectDB();
 const app = express();
 
 app.use(express.json());
-app.use(cors({origin:"http://localhost:4200"}));
+app.use(cors({origin:["http://localhost:4200","http://192.168.1.28:4000"]}));
 
 app.get("/", (req, res) => {
   res.json({ message: "API running..." });

@@ -5,7 +5,7 @@ const {sendResponseError} = require('../middleware/middleware')
 const {checkPassword, newToken} = require('../utils/utility.function')
 
 const signUpUser = async (req, res) => {
-  console.log("request",req.body)
+
   const {email, fullName, userName, password} = req.body
   try {
     const hash = await bcrypt.hash(password, 8)
@@ -22,7 +22,6 @@ const signUpUser = async (req, res) => {
 
 const signInUser = async (req, res) => {
   const {password, email} = req.body
-  console.log(req.body)
   try {
     const user = await User.findOne({email})
     if (!!!user) {

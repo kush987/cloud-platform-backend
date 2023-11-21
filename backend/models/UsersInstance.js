@@ -5,6 +5,10 @@ const userInstanceSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    appName:{
+        type: String,
+        required: true,
+    },
     projectId: {
         type: String,
         required: true,
@@ -16,6 +20,10 @@ const userInstanceSchema = mongoose.Schema({
     instance_name: {
         type: String,
         required: true,
+    },
+    storage_path:{
+        type: String,
+        required:true,
     },
     status: {
         type: String
