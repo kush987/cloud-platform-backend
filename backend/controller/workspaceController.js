@@ -15,9 +15,8 @@ class WorkSpaceController{
           result += characters.charAt(randomIndex);
         }
         return result;
-      }
+    }
     createSpace = async (req,res,next) => {
-        const client = new MongoClient('mongodb://localhost:27017', { useUnifiedTopology: true });
         const projectID = new ObjectID();
         let user_id = req.body.user_id;
         let projectId = req.body.projectId? req.body.projectId+'-'+this.generateRandomString(6):projectID+'-'+this.generateRandomString(6);
@@ -25,9 +24,6 @@ class WorkSpaceController{
         let projectDesc = req.body.projectDesc;
 
         try{
-            await client.connect();
-            const db = client.db('rcloud');
-            const projectsCollection = db.collection('workspace');
             const result = WorkSpace.create({'user_id':user_id,'projectId':projectId,'projectName':projectName,'projectDesc':projectDesc})
             res.send({'message':'done'})
         }catch (err){
@@ -51,7 +47,6 @@ class WorkSpaceController{
         });
         
     }
-
 
     editWorkSpace = async (req,res,next) =>{
         try {

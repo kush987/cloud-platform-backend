@@ -4,7 +4,9 @@ const User = require('../models/User');
 const UserInstance = require('../models/UsersInstance');
 const { execSync } = require('child_process');
 const WorkSpace = require('../models/workspaceModel');
+const dockerAPI = require('../config/docker_config');
 const axios = require('axios');
+
 class InstanceController {
 
 
@@ -23,7 +25,7 @@ class InstanceController {
         }
     
         try {
-            let dockerApiEndpoint = 'http://localhost:2375'; // Replace with your Docker API endpoint
+            let dockerApiEndpoint = dockerAPI; // Replace with your Docker API endpoint
             if (instance_name === 'blender') {
                 const response = await axios.post(`${dockerApiEndpoint}/containers/create`, {
                     name: username,
@@ -92,7 +94,7 @@ class InstanceController {
     startInstance = async (req, res, next) => {
         try {
             const container_id = req.body.container_id;
-            const dockerApiEndpoint = 'http://localhost:2375'; // Replace with your Docker API endpoint
+            const dockerApiEndpoint = dockerAPI; // Replace with your Docker API endpoint
     
             // Send a POST request to start the container
             await axios.post(`${dockerApiEndpoint}/containers/${container_id}/start`);
@@ -113,7 +115,7 @@ class InstanceController {
     stopInstance = async (req, res, next) => {
         try {
             const containerId = req.body.container_id;
-            const dockerApiEndpoint = 'http://localhost:2375'; // Replace with your Docker API endpoint
+            const dockerApiEndpoint = dockerAPI; // Replace with your Docker API endpoint
     
             // Send a POST request to stop the container
             await axios.post(`${dockerApiEndpoint}/containers/${containerId}/stop`);
@@ -134,7 +136,7 @@ class InstanceController {
     removeInstance = async (req, res, next) => {
         try {
             const containerId = req.body.container_id;
-            const dockerApiEndpoint = 'http://localhost:2375'; // Replace with your Docker API endpoint
+            const dockerApiEndpoint = dockerAPI; // Replace with your Docker API endpoint
     
             // Send a POST request to stop the container
             const inspectResponse = await axios.get(`${dockerApiEndpoint}/containers/${containerId}/json`);
@@ -167,7 +169,7 @@ class InstanceController {
     getInstance = async (req, res, next) => {
         try {
             const userId = req.params.param;
-            const dockerApiEndpoint = 'http://localhost:2375'; // Replace with your Docker API endpoint
+            const dockerApiEndpoint = dockerAPI; // Replace with your Docker API endpoint
     
             // Retrieve containers for the user
             const userContainers = await UserInstance.find({ user_id: userId });
