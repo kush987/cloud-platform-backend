@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines":{
+  "engines": {
     "node": "18.x"
   },
   "scripts": {
@@ -16,6 +16,7 @@
   "author": "Mohit Sojitra",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.7",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dockerode": "^4.0.0",
