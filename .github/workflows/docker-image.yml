@@ -44,14 +44,19 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+      - name: Connect to local Machine
+        with:
+          host: ${{ LOCAL_MACHINE }}
+          username: ${{ SSH_USER }}
+          key: ${{ SSH_KEY }}
+          port: 22
+      # - name: Deploy to Local Machine
+      #   run: |
+      #       echo "${SSH_PRIVATE_KEY}" > key.pem
+      #       chmod 600 key.pem
 
-      - name: Deploy to Local Machine
-        run: |
-            echo "${SSH_PRIVATE_KEY}" > key.pem
-            chmod 600 key.pem
-            
-            ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-              ${SSH_USER}@${LOCAL_MACHINE}
+      #       ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+      #         ${SSH_USER}@${LOCAL_MACHINE}
       
       - name: Pull Docker image
         run: "docker pull kushal123123/backend-cloud-test:main &&
