@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Pull Docker image
-        run: docker pull kushal123123/backend-cloud-test:${{ steps.push_to_registry.outputs['meta'].tags[0] }}
+        run: docker pull kushal123123/backend-cloud-test:main
 
       - name: Deploy to Local Machine
         run: |
@@ -55,12 +55,12 @@ jobs:
 
           ssh -i key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             ${SSH_USER}@${LOCAL_MACHINE} \
-            "docker pull kushal123123/backend-cloud-test:${{ steps.push_to_registry.outputs['meta'].tags[0] }} &&
+            "docker pull kushal123123/backend-cloud-test:main &&
             docker run -d \
               -e MONOGO_URI=${MONOGO_URI} \
               -e JWT_SECRET=${JWT_SECRET} \
               -p 4000:4000 \
-              kushal123123/backend-cloud-test:${{ steps.push_to_registry.outputs['meta'].tags[0] }}"
+              kushal123123/backend-cloud-test:main"
 
   # build:
 
