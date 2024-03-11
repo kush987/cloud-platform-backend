@@ -45,22 +45,17 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Pull Docker image
-        run: docker pull kushal123123/backend-cloud-test:main
-
       - name: Deploy to Local Machine
-        run: |
-          echo "${SSH_KEY}" > key.pem
-          chmod 600 key.pem
-
-          ssh -i key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${SSH_USER}@${LOCAL_MACHINE} \
-            "docker pull kushal123123/backend-cloud-test:main &&
-            docker run -d \
-              -e MONOGO_URI=${MONOGO_URI} \
-              -e JWT_SECRET=${JWT_SECRET} \
-              -p 4000:4000 \
-              kushal123123/backend-cloud-test:main"
+        run: ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+              ${SSH_USER}@${LOCAL_MACHINE}
+      
+      - name: Pull Docker image
+        run: "docker pull kushal123123/backend-cloud-test:main &&
+              docker run -d \
+                -e MONOGO_URI=${MONOGO_URI} \
+                -e JWT_SECRET=${JWT_SECRET} \
+                -p 4000:4000 \
+                kushal123123/backend-cloud-test:main"
 
   # build:
 
