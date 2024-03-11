@@ -48,9 +48,9 @@ jobs:
       - name: Deploy to Local Machine
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ LOCAL_MACHINE }}
-          username: ${{ SSH_USER }}
-          key: ${{ SSH_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker pull kushal123123/backend-cloud-test:main
             docker run -d \
