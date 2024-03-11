@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      process.env.MONGO_URI || 'mongodb://127.0.0.1/rcloud',
+      process.env.MONGO_URI || 'mongodb+srv://kushalrajak1999:test@dick@cluster0.2e2utdm.mongodb.net/rcloud',
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

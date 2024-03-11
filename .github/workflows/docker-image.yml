@@ -31,6 +31,37 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  deploy:
+  name: Deploy Docker Image
+  runs-on: ubuntu-latest
+  needs: push_to_registry
+  env:
+    MONOGO_URI: ${{ secrets.MONOGO_URI }}
+    JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    LOCAL_MACHINE: ${{ secrets.SSH_HOST }}
+    SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    SSH_USER: ${{ secrets.SSH_USER }}
+  steps:
+    - name: Check out the repo
+      uses: actions/checkout@v3
+
+    - name: Pull Docker image
+      run: docker pull kushal123123/backend-cloud-test:${{ steps.push_to_registry.outputs['meta'].tags[0] }}
+
+    - name: Deploy to Local Machine
+      run: |
+        echo "${SSH_KEY}" > key.pem
+        chmod 600 key.pem
+
+        ssh -i key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+          ${SSH_USER}@${LOCAL_MACHINE} \
+          "docker pull kushal123123/backend-cloud-test:${{ steps.push_to_registry.outputs['meta'].tags[0] }} &&
+           docker run -d \
+            -e MONOGO_URI=${MONOGO_URI} \
+            -e JWT_SECRET=${JWT_SECRET} \
+            -p 4000:4000 \
+            kushal123123/backend-cloud-test:${{ steps.push_to_registry.outputs['meta'].tags[0] }}"
+
   # build:
 
   #   runs-on: ubuntu-latest

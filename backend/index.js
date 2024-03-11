@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors({origin:'*'}));
 
 app.get("/", (req, res) => {
-  res.json({ message: "API running..." });
+  res.json({ message: "🚀 Server running 🚀" });
 });
 
 app.use("/api/workspace",workspaceRoutes);
